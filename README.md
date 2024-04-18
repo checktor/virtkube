@@ -13,7 +13,7 @@ goal is to provide a development cluster as close as possible to a productive Ku
 
 Vagrant can be installed on macOS, Linux, and Windows. Follow
 HashiCorp's [installation manual](https://developer.hashicorp.com/vagrant/install?product_intent=vagrant) for your
-desired operating systems.
+desired operating system.
 
 ### Virtualization tool like VirtualBox
 
@@ -29,7 +29,7 @@ installation procedure.
 vagrant up
 ```
 
-### Access cluster
+### Configure kubectl to work with cluster
 
 Use 'kubeconfig' file in [sync](sync) folder for kubectl authentication.
 
@@ -37,11 +37,20 @@ Use 'kubeconfig' file in [sync](sync) folder for kubectl authentication.
 kubectl --kubeconfig sync/kubeconfig get pods -A
 ```
 
+### Connect to cluster VMs
+
+Use `vagrant ssh <VM name>` to access a specific cluster VM, e.g. `vagrant ssh worker_0` to connect to first worker
+node.
+
 ### Remove cluster
 
 ```shell
 vagrant destroy
 ```
+
+## Cluster testing
+
+Run scripts in [test](test) folder, e.g. `./test/test-deployment.sh` to test deployment creation.
 
 ## Cluster configuration
 
