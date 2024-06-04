@@ -50,7 +50,7 @@ vagrant destroy
 
 ## Cluster testing
 
-Run scripts in [test](test) folder, e.g. `./test/test-deployment.sh` to test deployment creation.
+Run scripts in [test](test) folder, e.g. `./test/test-deployment-and-service.sh` to test deployment creation.
 
 ## Cluster configuration
 
