@@ -41,7 +41,7 @@ sudo apt-get install -qq -y containerd.io
 # Configure containerd
 sudo sh -c "containerd config default > /etc/containerd/config.toml"
 sed -i 's~SystemdCgroup = false~SystemdCgroup = true~g' /etc/containerd/config.toml
-sed -i 's~sandbox_image = "registry.k8s.io/pause:3.6"~sandbox_image = "registry.k8s.io/pause:3.9"~g' /etc/containerd/config.toml
+sed -i 's~sandbox_image = "registry.k8s.io/pause:3.8"~sandbox_image = "registry.k8s.io/pause:3.9"~g' /etc/containerd/config.toml
 
 # Refresh containerd configuration
 sudo systemctl restart containerd.service

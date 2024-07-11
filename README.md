@@ -37,6 +37,11 @@ Use 'kubeconfig' file in [sync](sync) folder for kubectl authentication.
 kubectl --kubeconfig sync/kubeconfig get pods -A
 ```
 
+```shell
+export KUBECONFIG=sync/kubeconfig
+kubectl get pods -A
+```
+
 ### Connect to cluster VMs
 
 Use `vagrant ssh <VM name>` to access a specific cluster VM, e.g. `vagrant ssh worker_0` to connect to first worker
@@ -45,7 +50,7 @@ node.
 ### Remove cluster
 
 ```shell
-vagrant destroy
+vagrant destroy -f
 ```
 
 ## Cluster testing

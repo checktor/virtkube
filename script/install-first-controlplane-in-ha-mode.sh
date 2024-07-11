@@ -27,5 +27,6 @@ sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 cp $HOME/.kube/config /vagrant/sync/kubeconfig
 
-# Install Flannel CNI plugin
+# Install and configure Flannel CNI plugin
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+kubectl patch ds kube-flannel-ds --patch-file /vagrant/manifest/patch-kube-flannel.yml -n kube-flannel

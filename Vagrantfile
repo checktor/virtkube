@@ -49,6 +49,7 @@ Vagrant.configure("2") do |config|
     (0..(num_workers - 1)).each do |i|
         config.vm.define "worker_#{i}" do |worker|
             worker_ip_address = worker_ip_addresses[i]
+            worker.vm.boot_timeout = 600
             worker.vm.hostname = "worker-#{i}"
             worker.vm.network "private_network", ip: worker_ip_address
             worker.vm.provision "shell", path: "script/init-cluster-node.sh", args: worker_ip_address

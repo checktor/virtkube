@@ -27,15 +27,22 @@ fi
 kubectl expose deployment nginx --name nginx --port 80 > /dev/null
 
 # Check if deployment is reachable via service
-kubectl run curl --restart=Never --rm -i -t --image curlimages/curl -- -s -o /dev/null nginx > /dev/null
+kubectl run busybox --image busybox --command -- sleep 3600 > /dev/null
+
+sleep 10
+
+kubectl exec -it busybox -- wget -O - nginx > /dev/null
 SERVICE_STATUS=$?
 if [ $SERVICE_STATUS -ne 0 ]; then
   TEST_STATUS=1
   echo 'Deployment is not reachable!'
 fi
 
+# Remove testing client
+kubectl delete pod busybox --grace-period 0 > /dev/null
+
 # Remove service
-kubectl delete service nginx > /dev/null
+kubectl delete service nginx --grace-period 0 > /dev/null
 
 # Remove deployment
 kubectl delete deployment nginx --grace-period 0 > /dev/null
