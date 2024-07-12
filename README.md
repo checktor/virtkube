@@ -59,7 +59,8 @@ Run scripts in [test](test) folder, e.g. `./test/test-deployment-and-service.sh`
 
 ## Cluster configuration
 
-See variables in [Vagrantfile](Vagrantfile) for configuration details.
+The number of controlplane and worker nodes can be configured using `num_controlplanes` and `num_workers` variables
+in [Vagrantfile](Vagrantfile). In case multiple controlplane nodes are configured, a corresponding load balancer based on [HAProxy](https://www.haproxy.org/) will be provisioned.
 
 ## Further tools
 

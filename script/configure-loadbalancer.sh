@@ -28,5 +28,5 @@ cat $TMP_PROXY_CONF_FILE >> /etc/haproxy/haproxy.cfg
 
 rm $TMP_PROXY_CONF_FILE
 
-# Refresh HAProxy configuration by restarting the service
+# Refresh HAProxy configuration
 sudo systemctl restart haproxy.service
