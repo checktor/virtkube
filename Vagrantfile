@@ -16,6 +16,7 @@ high_availability_enabled = num_controlplanes > 1
 Vagrant.configure("2") do |config|
 
     config.vm.box = "bento/ubuntu-24.04"
+    config.vm.boot_timeout = 600
 
     if high_availability_enabled
         config.vm.define "controlplane_loadbalancer" do |loadbalancer|
@@ -38,7 +39,7 @@ Vagrant.configure("2") do |config|
                     controlplane.vm.provision "shell", path: "script/install-first-controlplane-in-ha-mode.sh", args: [controlplane_ip_address, controlplane_loadbalancer_ip_address]
                 else
                     # Join further controlplanes to existing cluster.
-                    controlplane.vm.provision "shell", path: "sync/kubeadm-join-controlplane.sh"
+                    controlplane.vm.provision "shell", path: "sync/kubeadm-join-controlplane.sh", args: controlplane_ip_address
                 end
             else
                 controlplane.vm.provision "shell", path: "script/install-first-controlplane.sh", args: controlplane_ip_address
@@ -49,7 +50,6 @@ Vagrant.configure("2") do |config|
     (0..(num_workers - 1)).each do |i|
         config.vm.define "worker_#{i}" do |worker|
             worker_ip_address = worker_ip_addresses[i]
-            worker.vm.boot_timeout = 600
             worker.vm.hostname = "worker-#{i}"
             worker.vm.network "private_network", ip: worker_ip_address
             worker.vm.provision "shell", path: "script/init-cluster-node.sh", args: worker_ip_address

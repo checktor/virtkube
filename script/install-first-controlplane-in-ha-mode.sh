@@ -20,7 +20,7 @@ echo "sudo $KUBEADM_JOIN_COMMAND" > /vagrant/sync/kubeadm-join-worker.sh
 
 # Generate kubeadm join command for controlplane nodes and store it in /vagrant/sync folder
 CERTIFICATE_ENCRYPTION_KEY=$(sudo kubeadm init phase upload-certs --upload-certs | tail -1 | tr -d "\n")
-echo "sudo $KUBEADM_JOIN_COMMAND --control-plane --certificate-key=$CERTIFICATE_ENCRYPTION_KEY --apiserver-advertise-address=\$1 --pod-network-cidr=$POD_NETWORK_CIDR" > /vagrant/sync/kubeadm-join-controlplane.sh
+echo "sudo $KUBEADM_JOIN_COMMAND --control-plane --certificate-key=$CERTIFICATE_ENCRYPTION_KEY --apiserver-advertise-address=\$1" > /vagrant/sync/kubeadm-join-controlplane.sh
 
 # Configure kubectl to use admin user
 mkdir -p $HOME/.kube
