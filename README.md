@@ -31,21 +31,17 @@ vagrant up
 
 ### Configure kubectl to work with cluster
 
-Use 'kubeconfig' file in [sync](sync) folder for kubectl authentication.
+Use `kubeconfig` file in [sync](sync) folder for kubectl authentication.
 
 ```shell
-kubectl --kubeconfig sync/kubeconfig get pods -A
-```
-
-```shell
-export KUBECONFIG=sync/kubeconfig
+export KUBECONFIG=/path/to/sync/kubeconfig
 kubectl get pods -A
 ```
 
 ### Connect to cluster VMs
 
-Use `vagrant ssh <VM name>` to access a specific cluster VM, e.g. `vagrant ssh worker_0` to connect to first worker
-node.
+You can access a specific cluster VM by running `vagrant ssh <VM-name>`, e.g. `vagrant ssh worker_0` to connect to first
+worker node.
 
 ### Remove cluster
 
@@ -53,14 +49,38 @@ node.
 vagrant destroy -f
 ```
 
-## Cluster testing
+## Integration tests
 
-Run scripts in [test](test) folder, e.g. `./test/test-deployment-and-service.sh` to test deployment creation.
+Use Helm chart in [canary](canary) folder to test Kubernetes cluster setup. You might need to
+install [Helm](https://helm.sh/) first.
+
+### Install chart
+
+```shell
+export KUBECONFIG=/path/to/sync/kubeconfig
+helm install canary ./canary
+```
+
+### Execute tests
+
+```shell
+helm test canary
+```
+
+You might need to manually delete `canary-test-connection` pod by running `kubectl delete pod canary-test-connection`
+before re-executing the tests.
+
+### Remove chart
+
+```shell
+helm uninstall canary
+```
 
 ## Cluster configuration
 
 The number of controlplane and worker nodes can be configured using `num_controlplanes` and `num_workers` variables
-in [Vagrantfile](Vagrantfile). In case multiple controlplane nodes are configured, a corresponding load balancer based on [HAProxy](https://www.haproxy.org/) will be provisioned.
+in [Vagrantfile](Vagrantfile). In case multiple controlplane nodes are configured, a corresponding load balancer based
+on [HAProxy](https://www.haproxy.org/) will be provisioned.
 
 ## Further tools
 
