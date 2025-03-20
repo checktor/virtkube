@@ -2,25 +2,27 @@
 
 set -xe
 
-KUBERNETES_VERSION=v1.30
-
+KUBERNETES_VERSION=v1.32
 NODE_IP_ADDRESS=$1
 
-# Disable swap for current session
-sudo swapoff -a
-# Disable swap for future sessions
+# Disable swap
 sed -i 's~/swap.img~#/swap.img~g' /etc/fstab
+sudo swapoff -a
 
 # Configure network
 cp /vagrant/config/sysctl.d/k8s.conf /etc/sysctl.d/k8s.conf
 sudo sysctl --system
 
+# Load kernel modules
+cp /vagrant/config/modules-load.d/k8s.conf /etc/modules-load.d/k8s.conf
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
 # Install dependencies
 sudo apt-get update -qq
-# sudo apt-get upgrade -qq -y
 sudo apt-get install -qq -y apt-transport-https ca-certificates curl gpg
 
-# Add apt repositories
+# Configure apt repositories
 sudo mkdir -p -m 755 /etc/apt/keyrings
 ## Docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
@@ -35,15 +37,11 @@ echo \
 ## Fetch repository metadata
 sudo apt-get update -qq
 
-# Install containerd
-sudo apt-get install -qq -y containerd.io
-
 # Configure containerd
+sudo apt-get install -qq -y containerd.io
 sudo sh -c "containerd config default > /etc/containerd/config.toml"
 sed -i 's~SystemdCgroup = false~SystemdCgroup = true~g' /etc/containerd/config.toml
-sed -i 's~sandbox_image = "registry.k8s.io/pause:3.8"~sandbox_image = "registry.k8s.io/pause:3.9"~g' /etc/containerd/config.toml
-
-# Refresh containerd configuration
+sed -i 's~sandbox_image = "registry.k8s.io/pause:3.8"~sandbox_image = "registry.k8s.io/pause:3.10"~g' /etc/containerd/config.toml
 sudo systemctl restart containerd.service
 
 # Install kubeadm, kubelet and kubectl
@@ -56,5 +54,5 @@ sudo crictl config --set runtime-endpoint=unix:///var/run/containerd/containerd.
 # Configure kubelet to use current node's IP address
 sudo sh -c "echo \"KUBELET_EXTRA_ARGS=--node-ip=$NODE_IP_ADDRESS\" > /etc/default/kubelet"
 
-# Refresh kubelet configuration
+# Reload kubelet configuration
 sudo systemctl restart kubelet.service

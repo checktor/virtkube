@@ -4,8 +4,8 @@ virtkube implements a local Kubernetes cluster running on multiple virtual machi
 by [Vagrant](https://www.vagrantup.com/). It uses [kubeadm](https://kubernetes.io/docs/reference/setup-tools/kubeadm/)
 to set up the cluster from scratch based on minimal Ubuntu images for each node. In comparison
 to [minikube](https://minikube.sigs.k8s.io/docs/), this tool does not provision a single-node cluster. The smallest
-possible infrastructure consists of one controlplane and one worker node. This is intentional because virtkube's primary
-goal is to provide a development cluster as close as possible to a productive Kubernetes deployment.
+possible infrastructure consists of one controlplane and one worker node. This is intentional because virtkube's
+primary goal is to provide a development cluster as close as possible to a productive Kubernetes deployment.
 
 ## Prerequisites
 

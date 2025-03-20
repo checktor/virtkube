@@ -4,7 +4,7 @@ set -xe
 
 TMP_PROXY_CONF_FILE='/vagrant/sync/haproxy.cfg'
 
-# Proxy configuration without backend server IP addresses
+# Proxy configuration file without backend server IP addresses
 cat > $TMP_PROXY_CONF_FILE <<EOF
 frontend loadbalancer_node
   mode tcp
@@ -28,5 +28,5 @@ cat $TMP_PROXY_CONF_FILE >> /etc/haproxy/haproxy.cfg
 
 rm $TMP_PROXY_CONF_FILE
 
-# Refresh HAProxy configuration
+# Reload HAProxy configuration
 sudo systemctl restart haproxy.service
