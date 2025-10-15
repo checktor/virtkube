@@ -32,7 +32,8 @@ Vagrant.configure("2") do |config|
             controlplane_ip_address = controlplane_ip_addresses[i]
             controlplane.vm.hostname = "controlplane-#{i}"
             controlplane.vm.network "private_network", ip: controlplane_ip_address
-            controlplane.vm.provision "shell", path: "script/init-cluster-node.sh", args: controlplane_ip_address
+            controlplane.vm.provision "shell", path: "script/init-cluster-node.sh"
+            controlplane.vm.provision "shell", path: "script/configure-cluster-node.sh", args: controlplane_ip_address
             if high_availability_enabled
                 if i == 0
                     # Install and configure first controlplane.
@@ -52,7 +53,8 @@ Vagrant.configure("2") do |config|
             worker_ip_address = worker_ip_addresses[i]
             worker.vm.hostname = "worker-#{i}"
             worker.vm.network "private_network", ip: worker_ip_address
-            worker.vm.provision "shell", path: "script/init-cluster-node.sh", args: worker_ip_address
+            worker.vm.provision "shell", path: "script/init-cluster-node.sh"
+            worker.vm.provision "shell", path: "script/configure-cluster-node.sh", args: worker_ip_address
             worker.vm.provision "shell", path: "sync/kubeadm-join-worker.sh"
         end
     end

@@ -2,8 +2,7 @@
 
 set -xe
 
-KUBERNETES_VERSION=v1.32
-NODE_IP_ADDRESS=$1
+KUBERNETES_VERSION=v1.34
 
 # Disable swap
 sed -i 's~/swap.img~#/swap.img~g' /etc/fstab
@@ -50,9 +49,3 @@ sudo apt-mark hold kubelet kubeadm kubectl
 
 # Configure crictl to use containerd socket
 sudo crictl config --set runtime-endpoint=unix:///var/run/containerd/containerd.sock
-
-# Configure kubelet to use current node's IP address
-sudo sh -c "echo \"KUBELET_EXTRA_ARGS=--node-ip=$NODE_IP_ADDRESS\" > /etc/default/kubelet"
-
-# Reload kubelet configuration
-sudo systemctl restart kubelet.service
