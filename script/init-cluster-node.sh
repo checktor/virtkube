@@ -2,7 +2,7 @@
 
 set -xe
 
-KUBERNETES_VERSION=v1.32
+KUBERNETES_VERSION=v1.35
 NODE_IP_ADDRESS=$1
 
 # Disable swap

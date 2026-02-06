@@ -8,7 +8,8 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: curl
-      image: curlimages/curl
+    - name: wget
+      image: busybox
+      command: ['wget']
       args: ['{{ include "canary.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
